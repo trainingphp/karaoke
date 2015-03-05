@@ -15,14 +15,18 @@ class RoomsController extends AppController {
  */
 	public $components = array('Paginator');
 
+/////// admin /////////
+
+
 /**
  * index method
  *
  * @return void
  */
-	public function index() {
+	public function admin_index() {
 		$this->Room->recursive = 0;
 		$this->set('rooms', $this->Paginator->paginate());
+		$this->set('title', 'Quản lí phòng');
 	}
 
 /**
@@ -32,7 +36,7 @@ class RoomsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	public function admin_view($id = null) {
 		if (!$this->Room->exists($id)) {
 			throw new NotFoundException(__('Invalid room'));
 		}
@@ -45,7 +49,7 @@ class RoomsController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->Room->create();
 			if ($this->Room->save($this->request->data)) {
@@ -66,7 +70,7 @@ class RoomsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$this->Room->exists($id)) {
 			throw new NotFoundException(__('Invalid room'));
 		}
@@ -92,7 +96,7 @@ class RoomsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function delete($id = null) {
+	public function admin_delete($id = null) {
 		$this->Room->id = $id;
 		if (!$this->Room->exists()) {
 			throw new NotFoundException(__('Invalid room'));

@@ -33,18 +33,24 @@ class AppController extends Controller {
 				'key' => 'auth',
 				'params' => array('class' => 'alert alert-danger')
 				),
-			'loginRedirect' => '/'
+			'loginRedirect' => '/admin'
 			)
 		);
 
 	public function beforeFilter(){
 		$this->Auth->allow('index');
 		$this->set('user_info', $this->get_user());
+		if(substr($this->request->params['action'], 0, 6) == 'admin_') {
+			$this->layout = 'admin';
+		}
 	}
 
 	public function get_user() {
-		if($this->Session->check('User')) {
-			return $this->Session->read('User');
+		$this->loadModel('User');
+		if($this->Session->check('User.id')){
+			$id = $this->Session->read('User.id');
+			$user_info = $this->User->findById($id);
+			return $user_info;
 		}
 	}
 }

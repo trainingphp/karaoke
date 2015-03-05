@@ -31,7 +31,7 @@ class UsersController extends AppController {
 				);
 				if($user) {
 					if($this->Auth->login($user)){
-						$this->Session->Write('User', $user);
+						$this->Session->Write('User.id', $user['User']['id']);
 						$this->redirect($this->Auth->redirectUrl());
 					}
 					else {

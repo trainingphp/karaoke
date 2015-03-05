@@ -15,14 +15,19 @@ class OrdersController extends AppController {
  */
 	public $components = array('Paginator');
 
+
+///// admin///////
+
+
 /**
  * index method
  *
  * @return void
  */
-	public function index() {
+	public function admin_index() {
 		$this->Order->recursive = 0;
 		$this->set('orders', $this->Paginator->paginate());
+		$this->set('title', 'Hóa đơn');
 	}
 
 /**
@@ -32,7 +37,7 @@ class OrdersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	public function admin_view($id = null) {
 		if (!$this->Order->exists($id)) {
 			throw new NotFoundException(__('Invalid order'));
 		}
@@ -45,7 +50,7 @@ class OrdersController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->Order->create();
 			if ($this->Order->save($this->request->data)) {
@@ -67,7 +72,7 @@ class OrdersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$this->Order->exists($id)) {
 			throw new NotFoundException(__('Invalid order'));
 		}
@@ -94,7 +99,7 @@ class OrdersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function delete($id = null) {
+	public function admin_delete($id = null) {
 		$this->Order->id = $id;
 		if (!$this->Order->exists()) {
 			throw new NotFoundException(__('Invalid order'));
