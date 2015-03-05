@@ -22,4 +22,22 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+
+	public $components = array(
+		'Session',
+		'Auth' => array(
+			'loginAction' => '/login',
+			'authError' => 'Bạn cẩn đăng nhập để tiếp tục',
+			'flash' => array(
+				'element' => 'default',
+				'key' => 'auth',
+				'params' => array('class' => 'alert alert-danger')
+				),
+			'loginRedirect' => '/'
+			)
+		);
+
+	public function beforeFilter(){
+		$this->Auth->allow('index');
+	}
 }
