@@ -15,6 +15,53 @@ class UsersController extends AppController {
  */
 	public $components = array('Paginator');
 
+// login - đăng nhập vào hệ thông
+	public function login(){
+		if($this->request->is('post')) {
+			$this->User->set($this->request->data);
+			if($this->User->validates()) {
+				// pr($this->request->data);
+				$user = $this->User->find('first', array(
+					'recursive' => -1,
+					'conditions' => array(
+						'username' => $this->request->data['User']['username'],
+						'password' => md5($this->request->data['User']['password']),
+						)
+					)
+				);
+				if($user) {
+					if($this->Auth->login($user)){
+						$this->Session->Write('User', $user);
+						$this->redirect($this->Auth->redirectUrl());
+					}
+					else {
+						$this->Session->setFlash('Lỗi. Không thể đăng nhập!', 'default', array('class' => 'alert alert-danger'), 'auth');
+					}
+				}
+				else {
+					$this->Session->setFlash('Thông tin đăng nhập không chính xác. Vui lòng kiểm tra lại!', 'default', array('class' => 'alert alert-danger'), 'auth');
+				}
+			}
+			else {
+				$this->set('errors', $this->User->validationErrors);
+			}
+		}
+		$this->set('title', 'Đăng nhập');
+	}
+
+// logout - Đăng xuất khỏi hệ thống
+	public function logout(){
+		if($this->Session->check('User')){
+			$this->Session->destroy();
+			$this->Session->setFlash('Bạn đã đăng xuất. Hãy đăng nhập để tiếp tục!', 'default', array('class' => 'alert alert-info'), 'auth');
+			$this->redirect('/login');
+		}
+		else {
+			$this->Session->setFlash('Bạn chưa đăng nhập!', 'default', array('class' => 'alert alert-danger'), 'auth');
+			$this->redirect('/login');
+		}
+	}
+
 /**
  * index method
  *

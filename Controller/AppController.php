@@ -27,7 +27,7 @@ class AppController extends Controller {
 		'Session',
 		'Auth' => array(
 			'loginAction' => '/login',
-			'authError' => 'Bạn cẩn đăng nhập để tiếp tục',
+			'authError' => 'Bạn cần đăng nhập để tiếp tục',
 			'flash' => array(
 				'element' => 'default',
 				'key' => 'auth',
@@ -39,5 +39,12 @@ class AppController extends Controller {
 
 	public function beforeFilter(){
 		$this->Auth->allow('index');
+		$this->set('user_info', $this->get_user());
+	}
+
+	public function get_user() {
+		if($this->Session->check('User')) {
+			return $this->Session->read('User');
+		}
 	}
 }
