@@ -258,6 +258,7 @@
  * any date & time related errors.
  */
 	//date_default_timezone_set('UTC');
+	date_default_timezone_set('Asia/Saigon');
 
 /**
  * Cache Engine Configuration
