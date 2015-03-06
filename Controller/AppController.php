@@ -11,6 +11,7 @@
  */
 
 App::uses('Controller', 'Controller');
+App::uses('CakeTime', 'Utility');
 
 /**
  * Application Controller
