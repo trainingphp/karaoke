@@ -28,6 +28,14 @@ class RoomsController extends AppController {
 		$this->set('rooms', $this->Paginator->paginate());
 		$this->set('title', 'Quản lí phòng');
 	}
+	//
+	public function index() {
+		$list_room = $this->Room->find('all',array(
+			'order'=>array('Room.id'=>'asc')
+			));
+		//pr($list_room);
+		$this->set('list_room',$list_room);
+	}
 
 /**
  * view method

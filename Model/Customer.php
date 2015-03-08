@@ -66,7 +66,7 @@ class Customer extends AppModel {
 		),
 		'start' => array(
 			'time' => array(
-				'rule' => array('time'),
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -76,7 +76,7 @@ class Customer extends AppModel {
 		),
 		'end' => array(
 			'time' => array(
-				'rule' => array('time'),
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
