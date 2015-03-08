@@ -1,30 +1,58 @@
-<?php //echo pr($rooms); ?>
-<div class="row">
-<?php echo $this->Session->flash('sing'); ?>
-	<?php foreach ($rooms as $key => $room): ?>
-		<div class="col-xs-6 col-md-3">
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<h5 class="panel-title">Phòng: <?php echo $room['Room']['name']; ?></h5>
-				</div>
-	    		<div class="panel-body">
-	    			<p>Loại phòng: <?php echo $room['Type']['name']; ?></p>
-	    			<p>Tầng: <?php echo $room['Room']['floor']; ?></p>
-	    			<p>
-	    				<?php if ($room['Room']['singing'] == 1): ?>
-	    					<div class="alert alert-danger">Đang hát</div>
-	    					<?php //echo $this->Form->create('Room'); ?>
-	    						<?php echo $this->Form->postLink('Kết thúc', '/admin/rooms/end_sing/'.$room['Room']['id'], array('class' => 'btn btn-warning', 'escape' => false)); ?>
-	    					<?php //echo $this->Form->end(); ?>
-	    				<?php else: ?>
-	    					<div class="alert alert-info">Có thể sử dụng</div>
-	    					<?php //echo $this->Form->create('Room'); ?>
-	    						<?php echo $this->Form->postLink('Bắt đầu hát', '/admin/rooms/start_sing/'.$room['Room']['id'], array('class' => 'btn btn-success', 'escape' => false)); ?>
-	    					<?php //echo $this->Form->end(); ?>
-	    				<?php endif ?>
-	    			</p>
-	    		</div>
-	 		</div>
-		</div>
-	<?php endforeach ?>
+<div class="rooms index">
+	<h2><?php echo __('Rooms'); ?></h2>
+	<table cellpadding="0" cellspacing="0">
+	<thead>
+	<tr>
+			<th><?php echo $this->Paginator->sort('id'); ?></th>
+			<th><?php echo $this->Paginator->sort('type_id'); ?></th>
+			<th><?php echo $this->Paginator->sort('name'); ?></th>
+			<th><?php echo $this->Paginator->sort('floor'); ?></th>
+			<th><?php echo $this->Paginator->sort('singing'); ?></th>
+			<th class="actions"><?php echo __('Actions'); ?></th>
+	</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($rooms as $room): ?>
+	<tr>
+		<td><?php echo h($room['Room']['id']); ?>&nbsp;</td>
+		<td>
+			<?php echo $this->Html->link($room['Type']['name'], array('controller' => 'types', 'action' => 'view', $room['Type']['id'])); ?>
+		</td>
+		<td><?php echo h($room['Room']['name']); ?>&nbsp;</td>
+		<td><?php echo h($room['Room']['floor']); ?>&nbsp;</td>
+		<td><?php echo h($room['Room']['singing']); ?>&nbsp;</td>
+		<td class="actions">
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $room['Room']['id'])); ?>
+			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $room['Room']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $room['Room']['id']), array(), __('Are you sure you want to delete # %s?', $room['Room']['id'])); ?>
+		</td>
+	</tr>
+<?php endforeach; ?>
+	</tbody>
+	</table>
+	<p>
+	<?php
+	echo $this->Paginator->counter(array(
+	'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+	));
+	?>	</p>
+	<div class="paging">
+	<?php
+		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->numbers(array('separator' => ''));
+		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+	?>
+	</div>
+</div>
+<div class="actions">
+	<h3><?php echo __('Actions'); ?></h3>
+	<ul>
+		<li><?php echo $this->Html->link(__('New Room'), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('List Types'), array('controller' => 'types', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Type'), array('controller' => 'types', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Customers'), array('controller' => 'customers', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Customer'), array('controller' => 'customers', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Orders'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Order'), array('controller' => 'orders', 'action' => 'add')); ?> </li>
+	</ul>
 </div>

@@ -47,11 +47,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 					<?php echo $this->element('admin/menu'); ?>
 				</div>
 				<div class="col col-lg-10">
-					<?php if ($this->Session->check('User')): ?>
-						<?php echo $this->fetch('content'); ?>
-					<?php else: ?>
-						Bạn phải <?php echo $this->Html->link('đăng nhập', '/login'); ?>
-					<?php endif ?>					
+					<?php echo $this->fetch('content'); ?>
 				</div>
 			</div>
 		</div>
@@ -59,6 +55,6 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 			karaoke
 		</div>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
+	<?php //echo $this->element('sql_dump'); ?>
 </body>
 </html>

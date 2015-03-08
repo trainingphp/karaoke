@@ -25,7 +25,7 @@ App::uses('CakeTime', 'Utility');
 class AppController extends Controller {
 
 	public $components = array(
-		'Session', 'Tool',
+		'Session',
 		'Auth' => array(
 			'loginAction' => '/login',
 			'authError' => 'Bạn cần đăng nhập để tiếp tục',
