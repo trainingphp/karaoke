@@ -24,17 +24,12 @@ class RoomsController extends AppController {
  * @return void
  */
 	public function admin_index() {
-		$this->Room->recursive = 0;
-		$this->set('rooms', $this->Paginator->paginate());
+		$rooms = $this->Room->find('all', array(
+			'recursive' => 0,
+			'order' => array('Room.id' => 'asc'),
+		));
+		$this->set('rooms', $rooms);
 		$this->set('title', 'Quản lí phòng');
-	}
-	//
-	public function index() {
-		$list_room = $this->Room->find('all',array(
-			'order'=>array('Room.id'=>'asc')
-			));
-		//pr($list_room);
-		$this->set('list_room',$list_room);
 	}
 
 /**
@@ -117,4 +112,57 @@ class RoomsController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+
+// thời gian bắt đầu hát
+	public function admin_start_sing($id = null){
+		// if(!$this->Session->check('time_start.'.$id)) {
+			if($this->request->is('post')){
+				$this->Room->id = $id;
+				$this->Room->saveField('singing', 1);
+				$this->Session->write('time_start.'.$id, date('F jS, Y h:i A'));
+			}
+		// }
+		// elseif($this->Session->check('time_start.'.$id)) {
+		// 	$this->Session->setFlash('Phòng này đã được khởi động!', 'default', array('class' => 'alert alert-warning'), 'sing');
+		// }
+		$this->redirect($this->referer());
+	}
+
+// thời gian hát kết thúc
+	public function admin_end_sing($id = null) {
+		// if(!$this->Session->check('time_start.'.$id)) {
+		// 	$this->Session->setFlash('Phòng này chưa được khởi động. Vui lòng chọn bắt đầu hát để có thể tính tiền', 'default', array('class' => 'alert alert-warning'), 'sing');
+		// }
+		// else {
+			if($this->request->is('post')) {
+				$this->Room->id = $id;
+				$this->Room->saveField('singing', 0);
+
+				$room = $this->Room->findById($id);
+
+				$this->Session->write('time_end.'.$id, date('F jS, Y h:i A'));
+
+				$this->Session->write('payment.id', $id);
+
+				$time_start = $this->Session->read('time_start.'.$id);
+				$this->Session->write('payment.time_start', $time_start);
+
+				$time_end = $this->Session->read('time_end.'.$id);
+				$this->Session->write('payment.time_end', $time_end);
+
+				$time = (CakeTime::gmt($time_end) - CakeTime::gmt($time_start)) / 3600;
+				$this->Session->write('payment.time', $time);
+
+				$total = $time * $room['Type']['price'];
+				$this->Session->write('payment.total', $total);
+			}
+		// }
+		$this->set('title', 'Dịch vụ sử dụng');
+
+		// lấy các dịch vụ
+		$this->loadModel('Service');
+		$services = $this->Service->find('all');
+		$this->set('services', $services);
+	}
+
 }

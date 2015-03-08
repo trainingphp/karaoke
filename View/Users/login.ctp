@@ -6,7 +6,8 @@
 	<?php if (empty($user_info)): ?>
 		<p><b class="star">(*)</b>: Thông tin bắt buộc</p>
 		<?php echo $this->Session->flash('auth'); ?>
-			<?php echo $this->Form->create('User', array('class' => "form-horizontal", 'novalidate' => true, 'inputDefaults' => array('label' => false, 'class' => 'form-control'))); ?>
+		<?php echo $this->element('errors'); ?>
+			<?php echo $this->Form->create('User', array('class' => "form-horizontal", 'novalidate' => true, 'inputDefaults' => array('label' => false, 'class' => 'form-control', 'error' => false))); ?>
 			  <div class="form-group">
 			    <label for="inputUsername" class="col-sm-2 control-label">Tài khoản <b class="star">(*)</b></label>
 			    <div class="col-sm-10">
@@ -42,7 +43,7 @@
 			  </div>
 			<?php echo $this->Form->end(); ?>
 	<?php else: ?>
-		Bạn đã đăng nhập, quay lại <?php echo $this->Html->link('trang chủ', '/'); ?>
+		Bạn đã đăng nhập. Quay lại <?php echo $this->Html->link('trang chủ', '/'); ?>!
 	<?php endif ?>
 	</div>	
 </div>
