@@ -1,8 +1,11 @@
+<?php echo $this->Session->flash('noteAdd'); ?>
+<?php echo $this->Session->flash('updata_status'); ?>
+<?php echo $this->Session->flash('deleCus'); ?>
 <div class="panel panel-info">
       <div class="panel-heading">
         <h3 class="panel-title">Thông tin đặt phòng</h3>
       </div>
-      <?php //echo $this->Session->flash('updata_status'); ?>
+      
       <div class="panel-body">
         <table class="table table-condensed">
 	<thead>

@@ -33,6 +33,7 @@ class UsersController extends AppController {
 					if($this->Auth->login($user)){
 						$this->Session->Write('User.id', $user['User']['id']);
 						$this->redirect($this->Auth->redirectUrl());
+						$this->Session->setFlash('user',$user);
 					}
 					else {
 						$this->Session->setFlash('Lỗi. Không thể đăng nhập!', 'default', array('class' => 'alert alert-danger'), 'auth');
@@ -77,6 +78,7 @@ class UsersController extends AppController {
 public function admin_index() {
 	$this->User->recursive = 0;
 		$this->set('users', $this->Paginator->paginate());
+		
 	}
 public function admin_add() {
 	if ($this->request->is('post')) {
@@ -136,7 +138,7 @@ public function admin_edit($id=null) {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('Lưu thành công.','default',array('class'=>'alert alert-info'),'noteEdit'));
+				$this->Session->setFlash('Sửa đổi thành công.','default',array('class'=>'alert alert-info'),'noteEdit');
 				return $this->redirect(array('action' => 'admin_index'));
 			} else {
 				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));

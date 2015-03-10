@@ -84,13 +84,13 @@ class Order extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Customer' => array(
+		/*'Customer' => array(
 			'className' => 'Customer',
 			'foreignKey' => 'customer_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		),
+		),*/
 		'Room' => array(
 			'className' => 'Room',
 			'foreignKey' => 'room_id',

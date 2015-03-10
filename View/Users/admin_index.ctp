@@ -5,6 +5,7 @@
       <div class="panel-body">
       <h3><?php echo $this->Html->link(__('New User'), array('action' => 'add')); ?></h3>
       <?php echo $this->Session->flash('exitUser'); ?>
+      <?php echo $this->Session->flash('noteEdit'); ?>
       <table class="table table-hover">
 	    <thead>
 	      <tr>
@@ -21,7 +22,7 @@
 	    <?php $i = 0; foreach ($users as $user): $i++;?>
 	      <tr>
 	        <td><?php echo $i; ?></td>
-	        <td><?php echo $this->Html->link($user['Group']['name'], array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?></td>
+	        <td><?php echo $user['Group']['name']; ?></td>
 	        <td><?php echo h($user['User']['username']); ?></td>
 	        <td><?php echo h($user['User']['phone']); ?></td>
 	        <td><?php echo h($user['User']['email']); ?></td>

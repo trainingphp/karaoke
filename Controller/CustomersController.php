@@ -10,7 +10,7 @@ class CustomersController extends AppController {
 	public function beforeFilter(){
 		parent::beforeFilter();
 		$this->Auth->allow(
-			'register_room','add','view'
+			'register_room','view'
 			);
 	}
 /**
@@ -42,7 +42,7 @@ class CustomersController extends AppController {
 			$this->Customer->query("UPDATE customers
 			SET status = 1
 			WHERE customers.id = $info_cus_id");
-			//$this->Sesion->setFlash('Cập nhật thành công','default',array('class'=>'alert alert-success'),'updata_status');
+			$this->Session->setFlash('Cập nhật thành công','default',array('class'=>'alert alert-success'),'updata_status');
 			return $this->redirect($this->referer());
 		}
 		//debug($info_cus_id);
@@ -54,7 +54,7 @@ class CustomersController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Customer->create();
 			if ($this->Customer->save($this->request->data)) {
-				$this->Session->setFlash(__('Lưu thông tin thành công.'));
+				$this->Session->setFlash('Lưu thông tin thành công.','default',array('class'=>'alert alert-info'),'noteAdd');
 				return $this->redirect(array('action' => 'admin_index'));
 			} else {
 				$this->Session->setFlash(__('The customer could not be saved. Please, try again.'));
@@ -107,7 +107,7 @@ class CustomersController extends AppController {
 					$this->set('room_info',$list_register);
 				}else{
 					$this->Session->write('error_day',1);
-					$this->Session->setFlash('Ngày bạn chọn không đúng','default',array('class'=>'alert-danger'),'check_day');
+					$this->Session->setFlash('Ngày bạn chọn không được bé hơn ngày hiện tại','default',array('class'=>'alert alert-danger'),'check_day');
 				}
 			}
 			
@@ -122,10 +122,11 @@ class CustomersController extends AppController {
 	public function add() {
 		if($this->request->is('post')){
 			$kiemtra = true;
-			if($this->Session->check(error_day)){
-				$this->Session->setFlash('Ngày bạn chọn không đúng',
-					'default',array('class'=>'alert-danger'),'er');
+			if($this->Session->check('error_day')){
+				$this->Session->setFlash('Ngày bạn bạn muốn đặt phòng không hợp lệ,',
+					'default',array('class'=>'alert alert-danger'),'er');
 				$this->Session->delete('error_day');
+				$this->redirect($this->referer());
 			}else{
 				
 				$data = $this->request->data;
@@ -150,25 +151,26 @@ class CustomersController extends AppController {
 						//debug('fail');
 					}
 				}//
+				if($kiemtra){
+				//debug('ok');
+					$this->Customer->create();
+					if ($this->Customer->save($this->request->data)) {
+						$this->Session->setFlash('Bạn đã đặt phòng thành công, chúng tôi sẽ liên hệ với bạn sau, xin cảm ơn',
+							'default',array('class'=>'alert alert-info','note_save'));
+						return $this->redirect(array('controller'=>'Rooms','action' => 'index'));
+					} else {
+						$this->Session->setFlash('Đặt phòng không thành công, hãy kiểm tra lại thông tin',
+							'default',array('class'=>'alert alert-danger','note_save'));
+					}
+				}else{
+					//debug('fail');
+					$this->Session->setFlash('Giờ bạn chọn đã có','default',
+						array('class'=>'alert alert-danger'),'er');
+					return $this->redirect($this->referer());
+				}
 			}
 			//debug($data);
-			if($kiemtra){
-				//debug('ok');
-				$this->Customer->create();
-			if ($this->Customer->save($this->request->data)) {
-				$this->Session->setFlash('Bạn đã đặt phòng thành công, chúng tôi sẽ liên hệ với bạn sau, xin cảm ơn',
-					'default',array('class'=>'alert alert-info','note_save'));
-				return $this->redirect(array('controller'=>'Rooms','action' => 'index'));
-			} else {
-				$this->Session->setFlash('Đặt phòng không thành công, hãy kiểm tra lại thông tin',
-					'default',array('class'=>'alert alert-danger','note_save'));
-			}
-			}else{
-				//debug('fail');
-				$this->Session->setFlash('Giờ bạn chọn đã có','default',
-					array('class'=>'alert alert-danger'),'er');
-				return $this->redirect($this->referer());
-			}
+			
 		}
 		//$this->redirect($this->referer());
 	}
@@ -246,7 +248,7 @@ class CustomersController extends AppController {
 		}
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Customer->delete()) {
-			$this->Session->setFlash(__('Xóa thành công.'));
+			$this->Session->setFlash('Xóa thành công.','default',array('class'=>'alert alert-info'),'deleCus');
 		} else {
 			$this->Session->setFlash(__('The customer could not be deleted. Please, try again.'));
 		}

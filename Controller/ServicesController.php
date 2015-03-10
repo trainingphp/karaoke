@@ -63,6 +63,18 @@ class ServicesController extends AppController {
 			}
 		}
 	}
+	public function admin_add() {
+		if ($this->request->is('post')) {
+			$this->Service->create();
+			if ($this->Service->save($this->request->data)) {
+				$this->Session->setFlash('Thêm dịch vụ thành công.','default',array('class'=>'alert alert-info'),'addServer');
+				/*return $this->redirect(array('action' => 'index'));*/
+				return $this->redirect($this->referer());
+			} else {
+				$this->Session->setFlash(__('The service could not be saved. Please, try again.'));
+			}
+		}
+	}
 
 /**
  * edit method
@@ -99,7 +111,7 @@ class ServicesController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Service->save($this->request->data)) {
-				$this->Session->setFlash(__('The service has been saved.'));
+				$this->Session->setFlash('Sửa thông tin thành công','default',array('class'=>'alert alert-info'),'editServer');
 				return $this->redirect(array('action' => 'admin_index'));
 			} else {
 				$this->Session->setFlash(__('The service could not be saved. Please, try again.'));
@@ -138,7 +150,7 @@ class ServicesController extends AppController {
 		}
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Service->delete()) {
-			$this->Session->setFlash(__('Đã xóa.'));
+			$this->Session->setFlash('Đã xóa.','default',array('class'=>'alert alert-info'));
 		} else {
 			$this->Session->setFlash(__('Xóa không thành công'));
 		}

@@ -1,64 +1,58 @@
-<div class="orders index">
-	<h2><?php echo __('Orders'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<thead>
-	<tr>
-			<th><?php echo $this->Paginator->sort('id'); ?></th>
-			<th><?php echo $this->Paginator->sort('customer_id'); ?></th>
-			<th><?php echo $this->Paginator->sort('room_id'); ?></th>
-			<th><?php echo $this->Paginator->sort('customer_info'); ?></th>
-			<th><?php echo $this->Paginator->sort('order_info'); ?></th>
-			<th><?php echo $this->Paginator->sort('service_info'); ?></th>
-			<th><?php echo $this->Paginator->sort('total'); ?></th>
-			<th><?php echo $this->Paginator->sort('created'); ?></th>
-			<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	</thead>
-	<tbody>
-	<?php foreach ($orders as $order): ?>
-	<tr>
-		<td><?php echo h($order['Order']['id']); ?>&nbsp;</td>
-		<td>
-			<?php echo $this->Html->link($order['Customer']['name'], array('controller' => 'customers', 'action' => 'view', $order['Customer']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $this->Html->link($order['Room']['name'], array('controller' => 'rooms', 'action' => 'view', $order['Room']['id'])); ?>
-		</td>
-		<td><?php echo h($order['Order']['customer_info']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['order_info']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['service_info']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['total']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['created']); ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $order['Order']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array(), __('Are you sure you want to delete # %s?', $order['Order']['id'])); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-	</tbody>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	?>	</p>
-	<div class="paging">
-	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-	?>
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<h4 class="panel-title">Hóa đơn</h4>
 	</div>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Order'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Customers'), array('controller' => 'customers', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Customer'), array('controller' => 'customers', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Rooms'), array('controller' => 'rooms', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Room'), array('controller' => 'rooms', 'action' => 'add')); ?> </li>
-	</ul>
+	<div class="panel-body">
+		<?php echo $this->Form->create('Order', array('onsubmit'=>'return checkFormSeach()','id'=>'formSeach','action' => 'index', 'admin' => true, 'class' => 'form-inline', 'inputDefaults' => array('div' => false, 'label' => false, 'class' => 'form-control'))); ?>
+			Từ ngày: <?php echo $this->Form->input('start',array('id'=>'startDay')); ?> 
+			Đến ngày: <?php echo $this->Form->input('end',array('id'=>'endDay')); ?> 
+			<?php echo $this->Form->button('xem', array('class' => 'btn btn-primary')); ?>
+		<?php echo $this->Form->end(); ?>
+
+		<hr>
+		<?php echo $this->Session->flash('order'); ?>
+		<?php if (!empty($orders)): ?>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>STT</th>
+						<th>Khách hàng</th>
+						<th>Thời gian</th>
+						<th>Phòng</th>
+						<th>Thanh toán</th>
+						<th colspan="2">Hành động</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						$stt = 1; 
+						$total = 0;
+					?>
+					<?php foreach ($orders as $order): ?>
+						<tr>
+							<td><?php echo $stt++; ?></td>
+							<td><?php echo json_decode($order['Order']['customer_info'])->name; ?></td>
+							<td><?php echo $this->Time->format('d-m-y H:i:s', $order['Order']['created'], null, 'Asia/Ho_Chi_Minh'); ?></td>
+							<td><?php echo $order['Order']['room_id']; ?></td>
+							<td><?php echo $this->Number->currency(json_decode($order['Order']['order_info'])->total, ' VND', array('places' => 0, 'wholePosition' => 'after')); ?></td>
+							<td><?php echo $this->Html->link('Chi tiết', array('action' => 'view', $order['Order']['id'], 'admin' => true)); ?></td>
+							<td><?php echo $this->Form->postLink('Xóa', array('action' => 'delete', $order['Order']['id'], 'admin' => true)); ?></td>
+						</tr>
+						<?php $total += json_decode($order['Order']['order_info'])->total; ?>
+					<?php endforeach ?>
+					<tr>
+						<td><strong>Tổng</strong></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><strong><?php echo $this->Number->currency($total, ' VND', array('places' => 0, 'wholePosition' => 'after')) ?></strong></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		<?php else: ?>
+			Chưa có hóa đơn nào!
+		<?php endif ?>
+		
+	</div>
 </div>

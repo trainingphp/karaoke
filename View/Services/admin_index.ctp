@@ -1,10 +1,10 @@
 <div class="panel panel-success">
       <div class="panel-heading">
-        <h3 class="panel-title">Thông tin User</h3>
+        <h3 class="panel-title">Thông tin Server</h3>
       </div>
       <div class="panel-body">
       <h3><?php echo $this->Html->link(__('New Service'), array('action' => 'add')); ?></h3>
-      <?php echo $this->Session->flash('exitUser'); ?>
+      <?php echo $this->Session->flash('editServer'); ?>
       <table class="table table-hover">
 	    <thead>
 	      <tr>
@@ -21,7 +21,10 @@
 		<td><?php echo $i; ?>&nbsp;</td>
 		<td><?php echo h($service['Service']['name']); ?>&nbsp;</td>
 		<td><?php echo h($service['Service']['description']); ?>&nbsp;</td>
-		<td><?php echo h($service['Service']['price']); ?>&nbsp;</td>
+		<!-- <td><?php //echo h($service['Service']['price']); ?>&nbsp;</td> -->
+		<td>
+			<strong><?php echo $this->Number->currency($service['Service']['price'], ' VND', array('places' => 0, 'wholePosition' => 'after')); ?></strong>
+		</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $service['Service']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $service['Service']['id'])); ?>

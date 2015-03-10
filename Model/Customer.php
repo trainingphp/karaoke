@@ -48,6 +48,7 @@ class Customer extends AppModel {
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
 				//'message' => 'Your custom message here',
+				//'message' => 'Bạn chưa nhập địa chỉ',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -118,7 +119,7 @@ class Customer extends AppModel {
  *
  * @var array
  */
-	public $hasMany = array(
+	/*public $hasMany = array(
 		'Order' => array(
 			'className' => 'Order',
 			'foreignKey' => 'customer_id',
@@ -132,6 +133,6 @@ class Customer extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		)
-	);
+	);*/
 
 }

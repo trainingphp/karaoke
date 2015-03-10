@@ -21,7 +21,7 @@
       </tr>
       <tr>
       	<td>Tên gian kết thúc</td>
-      	<td><?php echo $this->Form->input('start',array('label'=>false,'value'=>$customer['Customer']['end'])); ?></td>
+      	<td><?php echo $this->Form->input('end',array('label'=>false,'value'=>$customer['Customer']['end'])); ?></td>
       </tr>
       <tr>
       	<td>Địa chỉ</td>

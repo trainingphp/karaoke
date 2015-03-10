@@ -58,6 +58,7 @@
         <h3 class="panel-title">Chọn giờ hát</h3>
       </div>
       <div class="panel-body">
+      <?php echo $this->Session->flash('er'); ?>
         <?php echo $this->Form->create('Customer',array('action'=>'add')); ?>
   <table class="table table-condensed">
         <p>Người đặt phòng:
@@ -65,7 +66,7 @@
       </p>
       <p>Số phòng:
         <?php echo $this->Form->input('room_id',array('value'=>$id,'label'=>false,'type'=>'text','readonly'=>true)); ?></p><p>
-        <?php echo $this->Session->flash('er'); ?>
+        
         Thời gian bắt đầu
         <?php echo $this->Form->input('start',array('label'=>false,'type'=>'number','placeholder'=>'vd: 9 hoặc 17')); ?></p>
         <p>
